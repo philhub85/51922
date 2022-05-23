@@ -1,5 +1,12 @@
-FROM scratch
-COPY bin/hello-openshift /hello-openshift
-EXPOSE 8080 8888
-USER 1001
-ENTRYPOINT ["/hello-openshift"]
+FROM node:14
+
+# Create app directory
+WORKDIR /usr/src/app
+
+COPY ./src/package*.json ./
+RUN npm install
+COPY ./src .
+RUN npm build
+EXPOSE 3000
+
+CMD [ "npm", "start" ]
